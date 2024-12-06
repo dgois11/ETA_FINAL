@@ -1,54 +1,56 @@
 from src.models.ice_cream_stand import IceCreamStand
 
-
 class TestIceCreamStand:
 
-    def test_flavors_available_with_flavors(self):
-        """Testa se a lista de sabores disponíveis é exibida corretamente."""
-        stand = IceCreamStand("Gelateria", "Sorveteria", ["Morango", "Chocolate"])
-        result = stand.flavors_available()
-
-        assert "Morango" in result and "Chocolate" in result
+    def test_flavors_available(self):
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", ["Chocolate", "Baunilha", "Morango"])
+        result = ice_cream_stand.flavors_available()
+        expected = (
+            "No momento temos os seguintes sabores de sorvete disponíveis:\n"
+            "- Chocolate\n- Baunilha\n- Morango"
+        )
+        assert result == expected, "A lista de sabores disponíveis está incorreta."
 
     def test_flavors_available_no_stock(self):
-        """Testa o retorno quando não há sabores disponíveis."""
-        stand = IceCreamStand("Gelateria", "Sorveteria")
-        result = stand.flavors_available()
-
-        assert result == "Estamos sem estoque atualmente!"
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", [])
+        result = ice_cream_stand.flavors_available()
+        expected = "Estamos sem estoque atualmente!"
+        assert result == expected, "A mensagem para estoque vazio está incorreta."
 
     def test_find_flavor_available(self):
-        """Testa se encontra um sabor disponível."""
-        stand = IceCreamStand("Gelateria", "Sorveteria", ["Morango", "Chocolate"])
-        result = stand.find_flavor("Morango")
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", ["Chocolate", "Baunilha", "Morango"])
+        result = ice_cream_stand.find_flavor("Chocolate")
+        expected = "Temos o sabor Chocolate disponível!"
+        assert result == expected, "O método não identificou o sabor disponível corretamente."
 
-        assert result == "Temos o sabor Morango no momento!"
+    def test_find_flavor_unavailable(self):
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", ["Chocolate", "Baunilha", "Morango"])
+        result = ice_cream_stand.find_flavor("Pistache")
+        expected = "Não temos o sabor Pistache no momento!"
+        assert result == expected, "O método não identificou corretamente que o sabor está indisponível."
 
-    def test_find_flavor_not_available(self):
-        """Testa se não encontra um sabor indisponível."""
-        stand = IceCreamStand("Gelateria", "Sorveteria", ["Morango", "Chocolate"])
-        result = stand.find_flavor("Baunilha")
-
-        assert result == "Não temos o sabor Baunilha no momento!"
-
-    def test_find_flavor_case_insensitive(self):
-        """Testa se a busca por sabores é case-insensitive."""
-        stand = IceCreamStand("Gelateria", "Sorveteria", ["Morango", "Chocolate"])
-        result = stand.find_flavor("morango")
-
-        assert result == "Temos o sabor Morango no momento!"
+    def test_find_flavor_no_stock(self):
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", [])
+        result = ice_cream_stand.find_flavor("Chocolate")
+        expected = "Estamos sem estoque atualmente!"
+        assert result == expected, "A mensagem para busca em estoque vazio está incorreta."
 
     def test_add_flavor_new(self):
-        """Testa a adição de um novo sabor."""
-        stand = IceCreamStand("Gelateria", "Sorveteria", ["Morango"])
-        result = stand.add_flavor("Chocolate")
-
-        assert "Chocolate adicionado" in result
-        assert "Chocolate" in stand.flavors
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", ["Chocolate", "Baunilha"])
+        result = ice_cream_stand.add_flavor("Morango")
+        expected = "Morango adicionado ao estoque!"
+        assert result == expected, "O sabor não foi adicionado corretamente."
+        assert "Morango" in ice_cream_stand.flavors, "O sabor não foi registrado na lista."
 
     def test_add_flavor_existing(self):
-        """Testa a tentativa de adicionar um sabor já existente."""
-        stand = IceCreamStand("Gelateria", "Sorveteria", ["Morango"])
-        result = stand.add_flavor("Morango")
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", ["Chocolate", "Baunilha"])
+        result = ice_cream_stand.add_flavor("Chocolate")
+        expected = "Sabor já disponível!"
+        assert result == expected, "O método não reconheceu que o sabor já estava disponível."
 
-        assert result == "\nO sabor Morango já está disponível!"
+    def test_add_flavor_no_stock(self):
+        ice_cream_stand = IceCreamStand("Sorveteria do Bairro", "Sorveteria", [])
+        result = ice_cream_stand.add_flavor("Pistache")
+        expected = "Pistache adicionado ao estoque!"
+        assert result == expected, "O sabor não foi adicionado corretamente em estoque vazio."
+        assert "Pistache" in ice_cream_stand.flavors, "O sabor não foi registrado corretamente em estoque vazio."

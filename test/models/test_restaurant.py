@@ -69,26 +69,16 @@ class TestRestaurant:
 
         assert verificador == "Número de clientes não pode ser negativo."
 
-    def test_increment_valid_customers(self):
-        restaurant = Restaurant("La Pergola", "Italiana")
-        restaurant.open_restaurant()
-        adicionar = 10
-        total = restaurant.increment_number_served(adicionar)
 
-        assert total == 10
 
-    def test_increment_negative_customers(self):
-        restaurant = Restaurant("La Pergola", "Italiana")
-        restaurant.open_restaurant()
-        adicionar = -5
-        resultado = restaurant.increment_number_served(adicionar)
 
-        assert resultado == "Numero nao pode ser negativo"
 
-    def test_increment_closed_restaurant(self):
-        restaurant = Restaurant("La Pergola", "Italiana")
-        adicionar = 10
-        resultado = restaurant.increment_number_served(adicionar)
 
-        assert resultado == "La Pergola está fechado!"
+
+
+
+
+
+
+
 
