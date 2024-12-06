@@ -1,3 +1,5 @@
+from PyQt5.QtCore.QByteArray import number
+
 
 class Restaurant:
     """Model de restaurante simples."""
@@ -64,7 +66,6 @@ class Restaurant:
         '''
 
         if self.open and more_customers > 0:
-            print("--> ", more_customers)
             self.number_served += more_customers
             return self.number_served
 
